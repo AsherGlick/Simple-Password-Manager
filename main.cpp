@@ -1,18 +1,25 @@
-/*
+/**\
 | This is the Paranoid Password Manager. The purpose of this program is so paranoid people
 | like myself have a secure password manager without any shady or closed source parts of
 | the progarm that may have the ability to send your password to a remote server and allow
 | others to access your files.
+| This program will encrypt your password file based on a password you give it, this is the
+| only password you will need to remember in order to get access to your password file, 
+| even if an intruder were to gain access to your file system they would not be able
+| to read your passwords, however if an intruder allready has access to your root priviliges
+| then this program will not help you because 
 | This program is under the BSD licence and was written by Asher Glick asherg@tetrakai.com
 | This program is provided ASIS with no warranty, though because the source code should be
 | relatively simple (or documented well) 
-*/
+\**/
 #include <iostream>
 #include <fstream>
 #include "openPassword.h"
 using namespace std;
 
 void printPassword (vector<passwd> passwordList);
+void configTerminal();
+void help(bool all);
 void configTerminal();
 
 int main(int argc, char * argv[]) {
@@ -48,6 +55,9 @@ int main(int argc, char * argv[]) {
   
   
   /// Get file username and password listing from the username and passoword ///
+  // NOTE: The password List variable is the variable that stores your password
+  // if you do not trust the location which you got this source from you should
+  // make sure to check all the functions that have this variable pass into them
   vector<passwd> passwordList = openPassword(filename, password);
   
   printPassword(passwordList);
@@ -72,9 +82,9 @@ int main(int argc, char * argv[]) {
       passwordList.push_back(newpass);
       getline(cin,input);
     }
+    
     ////////////////////////////// Remove command //////////////////////////////
     // the user wants to remove a password from the list
-    
     else if (input == "remove" || input == "rem" || input == "rm" || input == "-" || input == "r") {
       int deleteNumber;
       cout << "Password Number: ";
@@ -84,25 +94,23 @@ int main(int argc, char * argv[]) {
       getline(cin,input);
     }
     
-    /*
     ////////////////////////////// Change command //////////////////////////////
     // the user wants to alter a password form the list
-    */
     else if (input == "change" || input == "alter" || input == "mod" || input == "modify") {
       int changeNumber;
       cout << "Password Number: ";
     }
-    /*
+    
     //////////////////////////// Configure Command ////////////////////////////
     // The user wants to enter the configuration mode of the program
-    */
     else if (input == "config") {
       // Enter config mode
       configTerminal();
     }
-    /*
-    | Search Command
-    */
+    
+    ////////////////////////////// Search Command //////////////////////////////
+    // This command searches through your passwords, this is to be used to
+    // manage large numbers of passwords quickly
     else if (input == "find" || input == "search") {
       // search for a password based on the name
       cout << "what do you want to search for? Name Username Password" << endl;
@@ -130,22 +138,22 @@ int main(int argc, char * argv[]) {
         cout << "error, input not regognized" << endl;
       }
     }
-    /*
-    | List passwords Command
-    */
+    
+    ////////////////////////// List passwords Command //////////////////////////
+    // Lists all of the saved username and passwords
     else if (input == "passwords" || input == "passlist" || input == "list" || input == "show") {
       printPassword(passwordList);
     }
-    /*
-    | Save Command
-    */
+    
+    /////////////////////////////// Save Command ///////////////////////////////
+    // Save the current passwords in the same configuration as the old ones
     else if (input == "save" || input == "savepasswords" || input == "s") {
       cout << "Saving Password List" << endl;
       savePassword(filename, password, passwordList);
     }
-    /*
-    | Save As command
-    */
+    
+    ///////////////////////////// Save As command /////////////////////////////
+    // Save the current passwords in a new configuration
     else if (input == "saveas" || input == "savepasswordsas") {
       cout << "Save as Filename: ";
       string tempfile;
@@ -165,50 +173,56 @@ int main(int argc, char * argv[]) {
       savePassword(tempfile,temppass,passwordList);
       cout << "Passwords saved as " << tempfile << endl;
     }
-    /// Help Command ///
+    
+    /////////////////////////////// Exit Command ///////////////////////////////
+    // quit out of the program
+    else if (input == "exit" || input == "quit") {
+      break;
+    }
+    
+    /////////////////////////////// Help Command ///////////////////////////////
     // if the user wants to see the basic commands of the system
-    
-    
     else if (input == "help" || input == "?" || input == "--?") {
-      cout << "  add    - adds a passoword to the list" << endl;
-      cout << "  remove - removes a password from the list" << endl;
-      cout << "  change - changes a password on the list" << endl;
-      cout << "  find   - finds passwords with a specific name" << endl;
-      cout << "  list   - prints out the entire list of passwords" << endl;
-      cout << "  save   - saves the passowrd file with the same configurations as it was opened with" << endl;
-      cout << "  saveas - save the password files with new settings" << endl;
-      cout << "  help   - displays a list of functions" << endl;
-      cout << "  ?-A    - displays a list of functions an all possible variables" << endl;
+      help(false); // run the help command, do not display all
     }
+    
+    ///////////////////////////// Help All Command /////////////////////////////
+    // a command that shows all the functions and function variations allong with what they do
     else if (input == "help-all" || input == "?-A" || input == "?-a") {
-      cout << "  add  a  +" << endl;
-      cout << "    adds a name, username, and password to the current list" << endl;
-      cout << "  remove" << endl;
-      cout << "  change" << endl;
-      cout << "  find" << endl;
-      cout << "  list" << endl;
-      cout << "  save" << endl;
-      cout << "  saveas" << endl;
-      cout << "  help ? --?" << endl;
-      cout << "    shows a brief help menu highlighting all the simple commands" << endl;
-      cout << "  help-all  ?-A ?-a" << endl;
-      cout << "  config" << endl;
+      help(true); // run the help command, do display all
     }
-    else if (input == ""); // the input line is blank, the user just pressed return, do nothing
+    
+    ////////////////////////////// Empty Command //////////////////////////////
+    // the input line is blank, the user just pressed return, do nothing
+    else if (input == "");
+    
+    ///////////////////////////// Unknown Command /////////////////////////////
+    // This displays an error message followed by the help menu
     else {
       cout << "error: command not recognised" << endl;
-      cout << "  add    - adds a passoword to the list" << endl;
-      cout << "  remove - removes a password from the list" << endl;
-      cout << "  change - changes a password on the list" << endl;
-      cout << "  find   - finds passwords with a specific name" << endl;
-      cout << "  list   - prints out the entire list of passwords" << endl;
-      cout << "  save   - saves the passowrd file with the same configurations as it was opened with" << endl;
-      cout << "  saveas - save the password files with new settings" << endl;
-      cout << "  help   - displays a list of functions" << endl;
-      cout << "  ?-A    - displays a list of functions an all possible variables" << endl;
+      help(false); // run the help command, do not display all
     }
   }
-  
+}
+
+/************************** Help / Help All function **************************\
+| a function that displays the commands to use in a basic or in depth mode     |
+\******************************************************************************/
+void help (bool all) {
+  if (!all) {
+    
+  }
+  else {
+    cout << "  add    - adds a passoword to the list" << endl;
+    cout << "  remove - removes a password from the list" << endl;
+    cout << "  change - changes a password on the list" << endl;
+    cout << "  find   - finds passwords with a specific name" << endl;
+    cout << "  list   - prints out the entire list of passwords" << endl;
+    cout << "  save   - saves the passowrd file with the same configurations as it was opened with" << endl;
+    cout << "  saveas - save the password files with new settings" << endl;
+    cout << "  help   - displays a list of functions" << endl;
+    cout << "  ?-A    - displays a list of functions an all possible variables" << endl;
+  }
 }
 
 
@@ -224,7 +238,7 @@ void configTerminal() {
     getline(cin, input);
     if (input == "exit") break;
     else {
-      cout << "This is the Configure Terminal" << end;
+      cout << "This is the Configure Terminal" << endl;
       cout << "  Use 'exit' to return to normal mode" << endl;
     }
   }
