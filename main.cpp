@@ -12,8 +12,34 @@
 | This program is provided ASIS with no warranty, though because the source code should be
 | relatively simple (or documented well) 
 \**/
+/******************************** Licence Info ********************************\
+| Copyright (c) 2011, Asher Glick (asher.glick@gmail.com) All rights reserved. |
+| Redistribution and use in source and binary forms, with or without           |
+| modification, are permitted provided that the following conditions are met:  |
+| * Redistributions of source code must retain the above copyright notice,     |
+|   this list of conditions and the following disclaimer.                      |
+| * Redistributions in binary form must reproduce the above copyright notice,  |
+|   this list of conditions and the following disclaimer in the documentation  |
+|   and/or other materials provided with the distribution.                     |
+| * Neither the name of Rensselaer Polytechnic Institute nor the names of its  |
+|   contributors may be used to endorse or promote products derived from this  |
+|   software without specific prior written permission.                        |
+| THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"  |
+| AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE    |
+| IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE   |
+| ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE    |
+| LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR          |
+| CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF         |
+| SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS     |
+| INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN      |
+| CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)      |
+| ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE   |
+| POSSIBILITY OF SUCH DAMAGE.                                                  |
+| This licence information can also be found in ./COPYING                      |
+\******************************************************************************/
 #include <iostream>
 #include <fstream>
+#include <stdlib.h>
 #include "openPassword.h"
 using namespace std;
 
@@ -83,15 +109,26 @@ int main(int argc, char * argv[]) {
       getline(cin,input);
     }
     
-    ////////////////////////////// Remove command //////////////////////////////
+    ////////////////////////////// Remove Command //////////////////////////////
     // the user wants to remove a password from the list
     else if (input == "remove" || input == "rem" || input == "rm" || input == "-" || input == "r") {
       int deleteNumber;
       cout << "Password Number: ";
-      cin >> deleteNumber;
-      //remove delnum password
-      passwordList.erase (passwordList.begin()+deleteNumber);
       getline(cin,input);
+      if (input == "") continue;
+      else if (atoi(input.c_str()) > 0){
+        deleteNumber = atoi(input.c_str());
+        cout << "Are you sure you want to delete number " << deleteNumber << "?" ;
+        getline(cin,input);
+        if (input != "y" && input!="yes" && input != "") continue;
+        cout << "Deleted Entry Number " << deleteNumber << endl;
+      }
+      else {
+        cout << "that is not a valid number" << endl;
+        continue;
+      }
+      //remove delnum password
+      passwordList.erase (passwordList.begin()+deleteNumber+1);
     }
     
     ////////////////////////////// Change command //////////////////////////////
@@ -209,8 +246,12 @@ int main(int argc, char * argv[]) {
 | a function that displays the commands to use in a basic or in depth mode     |
 \******************************************************************************/
 void help (bool all) {
-  if (!all) {
-    
+  if (all) {
+    cout << "The help all function is currently unavalable becuse the entire list" << endl;
+    cout << "of functions has not been declared yet, once the functions have been" << endl;
+    cout << "declared then this function will be compleetly implemented, until   " << endl;
+    cout << "then here is the regular help funciton" << endl;
+    help(false);
   }
   else {
     cout << "  add    - adds a passoword to the list" << endl;
@@ -245,9 +286,9 @@ void configTerminal() {
 }
 
 /******************************* Print Password *******************************\
-| this prints all the passwords that are in the file
-| in columns
-| it uses the print width function to format the table
+| this prints all the passwords that are in the file                           |
+| in columns                                                                   |
+| it uses the print width function to format the table                         |
 \******************************************************************************/
 void printWidth(std::string print, int width) {
   int whitespace = width - print.size();
@@ -278,7 +319,7 @@ void printPassword (vector<passwd> passwordList) {
   cout << endl;
   for (int i = 0 ; i < passwordList.size(); i++) {
     if (passwordList[i].name == "" && passwordList[i].username == "" && passwordList[i].password == "") continue;
-    cout << i << '\t';
+    cout << i+1 << '\t';
     printWidth(passwordList[i].name,namelength);
     printWidth(passwordList[i].username,usernamelength);
     printWidth(passwordList[i].password,passwordlength);

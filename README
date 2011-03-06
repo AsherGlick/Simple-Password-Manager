@@ -1,1 +1,11 @@
-hello world
+Program written by Asher Glick
+
+License
+-------
+
+The "New BSD License," as defined by the Open Source Initiative[1][2], governs the program availability.
+
+Contributors may add their names (and email address) to the Project's ./AUTHORS file, if they so choose.
+
+[1]: At OSI's website: http://www.opensource.org/licenses/bsd-license
+[2]: Full text included in ./COPYING
