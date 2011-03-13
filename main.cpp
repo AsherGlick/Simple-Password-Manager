@@ -13,7 +13,7 @@
 | relatively simple (or documented well) 
 \**/
 /******************************** Licence Info ********************************\
-| Copyright (c) 2011, Asher Glick (asher.glick@gmail.com) All rights reserved. |
+| Copyright (c) 2011, ASHER GLICK (asher.glick@gmail.com) All rights reserved. |
 | Redistribution and use in source and binary forms, with or without           |
 | modification, are permitted provided that the following conditions are met:  |
 | * Redistributions of source code must retain the above copyright notice,     |
@@ -47,6 +47,7 @@ void printPassword (vector<passwd> passwordList);
 void configTerminal();
 void help(bool all);
 void configTerminal();
+bool within (string searchFor, string searchIn);
 
 int main(int argc, char * argv[]) {
   string filename;
@@ -118,9 +119,15 @@ int main(int argc, char * argv[]) {
       if (input == "") continue;
       else if (atoi(input.c_str()) > 0){
         deleteNumber = atoi(input.c_str());
-        cout << "Are you sure you want to delete number " << deleteNumber << "?" ;
-        getline(cin,input);
-        if (input != "y" && input!="yes" && input != "") continue;
+        while (true) {
+          cout << "Are you sure you want to delete number " << deleteNumber << "?" ;
+          getline(cin,input);
+          if (input != "") break;
+        }
+        if (input != "y" && input!="yes") {
+          cout << "Nothing Deleted" << endl;
+          continue;
+        }
         cout << "Deleted Entry Number " << deleteNumber << endl;
       }
       else {
@@ -136,6 +143,7 @@ int main(int argc, char * argv[]) {
     else if (input == "change" || input == "alter" || input == "mod" || input == "modify") {
       int changeNumber;
       cout << "Password Number: ";
+      
     }
     
     //////////////////////////// Configure Command ////////////////////////////
@@ -150,30 +158,18 @@ int main(int argc, char * argv[]) {
     // manage large numbers of passwords quickly
     else if (input == "find" || input == "search") {
       // search for a password based on the name
-      cout << "what do you want to search for? Name Username Password" << endl;
-      getline(cin, input);
-      if (input == "name" || input == "Name") {
-        cout << "What name do you want to seach for" << endl;
-        getline(cin,input);
-        //search name
-        vector<passwd> searchList = passwordList;
-        for (int i = 0; i < passwordList.size(); i++) {
-          if (searchList[i].name != input) {
-            searchList[i].name = "";
-            searchList[i].username = "";
-            searchList[i].password = "";
-          }
+      cout << "What do you want to seach for" << endl;
+      getline(cin,input);
+      //search name
+      vector<passwd> searchList = passwordList;
+      for (int i = 0; i < passwordList.size(); i++) {
+        if (!within(input,searchList[i].name) && !within(input,searchList[i].username)){
+          searchList[i].name = "";
+          searchList[i].username = "";
+          searchList[i].password = "";
         }
-        printPassword(searchList);
       }
-      else if (input == "username" || input == "Username" || input == "user" || input == "User") {
-      }
-      else if (input == "password" || input == "Password") {
-        
-      }
-      else {
-        cout << "error, input not regognized" << endl;
-      }
+      printPassword(searchList);
     }
     
     ////////////////////////// List passwords Command //////////////////////////
@@ -266,6 +262,21 @@ void help (bool all) {
   }
 }
 
+
+/*********************************** Within ***********************************\
+\******************************************************************************/
+bool within (string searchFor, string searchIn) {
+  int size = searchIn.size() - searchFor.size() + 1;
+  if (size < 0) return false;
+  //if (searchIn == searchFor) return true;
+  for (int i = 0; i < size; i++) {
+    if (searchFor == searchIn.substr(i,searchFor.size())) {
+      cout << "DEBUG: " << searchFor << " | " << searchIn.substr(i,searchFor.size()) << endl;
+      return true;
+    }
+  }
+  return false;
+} 
 
 /***************************** Configure Terminal *****************************\
 | The configure terminal function is a configure mode for the password manager |
