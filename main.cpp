@@ -268,7 +268,9 @@ void help (bool all) {
 /***************************** Less Then Password *****************************\
 | a less then function used for sorting the vector of passwords                |
 \******************************************************************************/
-bool lessThenPassword(passwd one, passwd two) return (one.name < two.name);
+bool lessThenPassword(passwd one, passwd two) {
+  return (one.name < two.name);
+}
 
 /*********************************** Within ***********************************\
 | This is a search function that searches for a string within another string   |
