@@ -138,7 +138,7 @@ int main(int argc, char * argv[]) {
         continue;
       }
       //remove delnum password
-      passwordList.erase (passwordList.begin()+deleteNumber+1);
+      passwordList.erase (passwordList.begin()+deleteNumber-1);
     }
     
     ////////////////////////////// Change command //////////////////////////////
