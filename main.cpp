@@ -40,6 +40,7 @@
 #include <iostream>
 #include <fstream>
 #include <stdlib.h>
+#include <algorithm>
 #include "openPassword.h"
 using namespace std;
 
@@ -47,6 +48,7 @@ void printPassword (vector<passwd> passwordList);
 void configTerminal();
 void help(bool all);
 void configTerminal();
+bool lessThenPassword(passwd one, passwd two);
 bool within (string searchFor, string searchIn);
 
 int main(int argc, char * argv[]) {
@@ -108,6 +110,7 @@ int main(int argc, char * argv[]) {
       cin >> newpass.password;
       passwordList.push_back(newpass);
       getline(cin,input);
+      sort(passwordList.begin(), passwordList.end(), lessThenPassword);
     }
     
     ////////////////////////////// Remove Command //////////////////////////////
@@ -262,10 +265,14 @@ void help (bool all) {
   }
 }
 
+/***************************** Less Then Password *****************************\
+| a less then function used for sorting the vector of passwords                |
+\******************************************************************************/
+bool lessThenPassword(passwd one, passwd two) return (one.name < two.name);
 
 /*********************************** Within ***********************************\
 | This is a search function that searches for a string within another string   |
-| this allows the typed input to check for 
+| this allows the typed input to check for                                     |
 \******************************************************************************/
 bool within (string searchFor, string searchIn) {
   int size = searchIn.size() - searchFor.size() + 1;
