@@ -41,6 +41,7 @@ std::string unEncrypt (std::string input,std::string password) {
     }
   }
 }
+
 /******************************* Open Password *******************************\
 | This function opens the file and unencrypts it then return a formatted      |
 | version of the contents of the file as a vector of struct passwd            |

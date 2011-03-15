@@ -264,6 +264,8 @@ void help (bool all) {
 
 
 /*********************************** Within ***********************************\
+| This is a search function that searches for a string within another string   |
+| this allows the typed input to check for 
 \******************************************************************************/
 bool within (string searchFor, string searchIn) {
   int size = searchIn.size() - searchFor.size() + 1;
@@ -271,7 +273,6 @@ bool within (string searchFor, string searchIn) {
   //if (searchIn == searchFor) return true;
   for (int i = 0; i < size; i++) {
     if (searchFor == searchIn.substr(i,searchFor.size())) {
-      cout << "DEBUG: " << searchFor << " | " << searchIn.substr(i,searchFor.size()) << endl;
       return true;
     }
   }
@@ -287,6 +288,7 @@ bool within (string searchFor, string searchIn) {
 void configTerminal() {
   string input;
   while (true) {
+    cout << "CONFIG>";
     getline(cin, input);
     if (input == "exit") break;
     else {
