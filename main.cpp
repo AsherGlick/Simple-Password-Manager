@@ -37,12 +37,22 @@
 | POSSIBILITY OF SUCH DAMAGE.                                                  |
 | This licence information can also be found in ./COPYING                      |
 \******************************************************************************/
+#define PASSWORD true
+#define NOTPASSWORD false
+
 #include <iostream>
 #include <fstream>
 #include <stdlib.h>
 #include <algorithm>
 #include "openPassword.h"
+#include "advancedInput.h"
 using namespace std;
+
+// Configuration Variables
+int inputMode = 2;
+bool showPassword = false;
+string defaultPath;
+
 
 void printPassword (vector<passwd> passwordList);
 void configTerminal();
@@ -50,6 +60,7 @@ void help(bool all);
 void configTerminal();
 bool lessThenPassword(passwd one, passwd two);
 bool within (string searchFor, string searchIn);
+string getInput(bool isPassword);
 
 int main(int argc, char * argv[]) {
   string filename;
@@ -59,14 +70,17 @@ int main(int argc, char * argv[]) {
   // make sure that the input given by the terminal is valad
   if(argc == 1) {
     cout << "Input the path to your password file: ";
-    getline(cin,filename);
+    //getline(cin,filename);
+    filename = getInput(NOTPASSWORD);
     cout << "What is the password to unlock the file: ";
-    getline(cin,password);
+    //getline(cin,password);
+    password = getInput(PASSWORD);
   }  
   else if (argc == 2 && string(argv[1]) != "-?") {
     filename = argv[1];
     cout << "What is the password to unlock the file: ";
-    getline(cin,password);
+    //getline(cin,password);
+    password = getInput(PASSWORD);
   }
   else if (argc == 3) {
     filename = argv[1];
@@ -89,13 +103,13 @@ int main(int argc, char * argv[]) {
   // make sure to check all the functions that have this variable pass into them
   vector<passwd> passwordList = openPassword(filename, password);
   
-  printPassword(passwordList);
+  //printPassword(passwordList);
   string input;
   // begin the cli interface loop allowing the user to input commands
   while(true) {
     cout << "]> ";
-    getline(cin,input);
-    
+    //getline(cin,input);
+    input = getInput(NOTPASSWORD);
     
     /////////////////////////////// Add Command ///////////////////////////////
     //the user wants to add a password to the lsit
@@ -103,11 +117,14 @@ int main(int argc, char * argv[]) {
     if (input == "add" || input == "+" || input == "a") {
       passwd newpass;
       cout << "name: ";
-      cin >> newpass.name;
+      //cin >> newpass.name;
+      newpass.name = getInput(NOTPASSWORD);
       cout << "username: ";
-      cin >> newpass.username;
+      //cin >> newpass.username;
+      newpass.username = getInput(NOTPASSWORD);
       cout << "password: ";
-      cin >> newpass.password;
+      //cin >> newpass.password;
+      newpass.password = getInput(PASSWORD);
       passwordList.push_back(newpass);
       getline(cin,input);
       sort(passwordList.begin(), passwordList.end(), lessThenPassword);
@@ -258,7 +275,7 @@ void help (bool all) {
     cout << "  change - changes a password on the list" << endl;
     cout << "  find   - finds passwords with a specific name" << endl;
     cout << "  list   - prints out the entire list of passwords" << endl;
-    cout << "  save   - saves the passowrd file with the same configurations as it was opened with" << endl;
+    cout << "  save   - saves the current password file" << endl;
     cout << "  saveas - save the password files with new settings" << endl;
     cout << "  help   - displays a list of functions" << endl;
     cout << "  ?-A    - displays a list of functions an all possible variables" << endl;
@@ -288,6 +305,38 @@ bool within (string searchFor, string searchIn) {
   return false;
 } 
 
+
+/********************************* Get Input *********************************\
+\*****************************************************************************/
+string getInput(bool isPassword) {
+  if (inputMode == 1) { // input mode is standard cin
+    string input;
+    getline (cin, input);
+    return input;
+  }
+  else if (inputMode == 2) { // input mode is advanced mode
+    #ifdef _advancedInput_h_
+      return (getInput2(isPassword));  
+    #endif
+    #ifndef _advancedInput_h_
+      cout << "   <<<<ERROR>>>>" << endl;
+      cout << "ADVANCED INPUT MODE WAS NOT COMPILED IN THIS PROGRAM" << endl;
+      cout << " In order to use the advanced input mode you need to compile the program with the advanced input file, by default the source code does not compile with this function. If you want to use advanced input read the documentation page on how to incude advanced input" << endl;
+    #endif
+  }
+  else if (inputMode == 3) { // input mode is ncruses mode
+    #ifdef _nCursesIO_h_
+      return(getInputNcurses(isPassword));
+    #endif
+    #ifndef _nCursesIO_h_
+      cout << "<([ ERROR ])>" << endl;
+      cout << "NCURSES INPUT MODE WAS NOT COMPILED IN THIS PROGRAM" << endl;
+      cout << " In order to use the ncurses IO mode you need to" << endl;
+      cout << "compile the program with the ncurses IO file. By default the source code does not compile with this feature. If you want to use the ncurses IO read the documentation page on how to include the ncurses IO functions" << endl;   
+    #endif
+  }
+}
+
 /***************************** Configure Terminal *****************************\
 | The configure terminal function is a configure mode for the password manager |
 | it allows you to use special commands that do not affect any password list   |
@@ -300,6 +349,10 @@ void configTerminal() {
     cout << "CONFIG>";
     getline(cin, input);
     if (input == "exit") break;
+    else if (input == "name") {
+    }
+    else if (input == "") {
+    }
     else {
       cout << "This is the Configure Terminal" << endl;
       cout << "  Use 'exit' to return to normal mode" << endl;

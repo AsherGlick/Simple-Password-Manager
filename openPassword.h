@@ -9,7 +9,6 @@ struct passwd {
   std::string password;
 };
 
-
 std::string encrypt (std::string input, std::string password) {
   std::string output = input;
   if (password == "") {
