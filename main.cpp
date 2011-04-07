@@ -8,12 +8,12 @@
 | even if an intruder were to gain access to your file system they would not be able
 | to read your passwords, however if an intruder allready has access to your root priviliges
 | then this program will not help you because 
-| This program is under the BSD licence and was written by Asher Glick asherg@tetrakai.com
+| This program is under the BSD licence and was written by Asher Glick aglick@tetrakai.com
 | This program is provided ASIS with no warranty, though because the source code should be
 | relatively simple (or documented well) 
 \**/
 /******************************** Licence Info ********************************\
-| Copyright (c) 2011, ASHER GLICK (asher.glick@gmail.com) All rights reserved. |
+| Copyright (c) 2011, ASHER GLICK (aglick@tetrakai.com) All rights reserved.   |
 | Redistribution and use in source and binary forms, with or without           |
 | modification, are permitted provided that the following conditions are met:  |
 | * Redistributions of source code must retain the above copyright notice,     |
@@ -126,8 +126,8 @@ int main(int argc, char * argv[]) {
       //cin >> newpass.password;
       newpass.password = getInput(PASSWORD);
       passwordList.push_back(newpass);
-      getline(cin,input);
       sort(passwordList.begin(), passwordList.end(), lessThenPassword);
+      cout << "Added to the password list" << endl;
     }
     
     ////////////////////////////// Remove Command //////////////////////////////
@@ -135,13 +135,15 @@ int main(int argc, char * argv[]) {
     else if (input == "remove" || input == "rem" || input == "rm" || input == "-" || input == "r") {
       int deleteNumber;
       cout << "Password Number: ";
-      getline(cin,input);
+      //getline(cin,input);
+      input =  = getInput(NOTPASSWORD);
       if (input == "") continue;
       else if (atoi(input.c_str()) > 0){
         deleteNumber = atoi(input.c_str());
         while (true) {
           cout << "Are you sure you want to delete number " << deleteNumber << "?" ;
-          getline(cin,input);
+          //getline(cin,input);
+          input = getInput(NOTPASSWORD);
           if (input != "") break;
         }
         if (input != "y" && input!="yes") {
@@ -179,17 +181,25 @@ int main(int argc, char * argv[]) {
     else if (input == "find" || input == "search") {
       // search for a password based on the name
       cout << "What do you want to seach for" << endl;
-      getline(cin,input);
+      //getline(cin,input);
+      input =  = getInput(NOTPASSWORD);
       //search name
       vector<passwd> searchList = passwordList;
+      int erased = 0;
       for (int i = 0; i < passwordList.size(); i++) {
         if (!within(input,searchList[i].name) && !within(input,searchList[i].username)){
           searchList[i].name = "";
           searchList[i].username = "";
           searchList[i].password = "";
+          erased ++;
         }
       }
-      printPassword(searchList);
+      if (searchList.size() == erased) {
+        cout << "No Results Found" << endl;
+      }
+      else {
+        printPassword(searchList);
+      }
     }
     
     ////////////////////////// List passwords Command //////////////////////////
@@ -210,14 +220,17 @@ int main(int argc, char * argv[]) {
     else if (input == "saveas" || input == "savepasswordsas") {
       cout << "Save as Filename: ";
       string tempfile;
-      getline(cin, tempfile);
+      //getline(cin, tempfile);
+      tempfile = getInput(NOTPASSWORD);
       string temppass;
       while (true) {
         cout << "Save as Password: ";
-        getline(cin,temppass);
+        //getline(cin,temppass);
+        temppass = getInput(PASSWORD);
         cout << "Re-type Password: ";
         string temppass2;
-        getline(cin,temppass2);
+        //getline(cin,temppass2);
+        temppass2 = getInput(PASSWORD);
         if (temppass != temppass2) {
           cout << "Error, passwords do not match" << endl;
         }
@@ -347,7 +360,8 @@ void configTerminal() {
   string input;
   while (true) {
     cout << "CONFIG>";
-    getline(cin, input);
+    //getline(cin, input);
+    input = getInput(NOTPASSWORD);
     if (input == "exit") break;
     else if (input == "name") {
     }
