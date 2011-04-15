@@ -44,7 +44,9 @@
 #include <fstream>
 #include <stdlib.h>
 #include <algorithm>
+
 #include "openPassword.h"
+#include "configFile.h"
 #include "advancedInput.h"
 using namespace std;
 
@@ -70,16 +72,13 @@ int main(int argc, char * argv[]) {
   // make sure that the input given by the terminal is valad
   if(argc == 1) {
     cout << "Input the path to your password file: ";
-    //getline(cin,filename);
     filename = getInput(NOTPASSWORD);
     cout << "What is the password to unlock the file: ";
-    //getline(cin,password);
     password = getInput(PASSWORD);
   }  
   else if (argc == 2 && string(argv[1]) != "-?") {
     filename = argv[1];
     cout << "What is the password to unlock the file: ";
-    //getline(cin,password);
     password = getInput(PASSWORD);
   }
   else if (argc == 3) {
@@ -108,7 +107,6 @@ int main(int argc, char * argv[]) {
   // begin the cli interface loop allowing the user to input commands
   while(true) {
     cout << "]> ";
-    //getline(cin,input);
     input = getInput(NOTPASSWORD);
     
     /////////////////////////////// Add Command ///////////////////////////////
@@ -117,13 +115,10 @@ int main(int argc, char * argv[]) {
     if (input == "add" || input == "+" || input == "a") {
       passwd newpass;
       cout << "name: ";
-      //cin >> newpass.name;
       newpass.name = getInput(NOTPASSWORD);
       cout << "username: ";
-      //cin >> newpass.username;
       newpass.username = getInput(NOTPASSWORD);
       cout << "password: ";
-      //cin >> newpass.password;
       newpass.password = getInput(PASSWORD);
       passwordList.push_back(newpass);
       sort(passwordList.begin(), passwordList.end(), lessThenPassword);
@@ -135,14 +130,12 @@ int main(int argc, char * argv[]) {
     else if (input == "remove" || input == "rem" || input == "rm" || input == "-" || input == "r") {
       int deleteNumber;
       cout << "Password Number: ";
-      //getline(cin,input);
       input =  = getInput(NOTPASSWORD);
       if (input == "") continue;
       else if (atoi(input.c_str()) > 0){
         deleteNumber = atoi(input.c_str());
         while (true) {
           cout << "Are you sure you want to delete number " << deleteNumber << "?" ;
-          //getline(cin,input);
           input = getInput(NOTPASSWORD);
           if (input != "") break;
         }
@@ -181,7 +174,6 @@ int main(int argc, char * argv[]) {
     else if (input == "find" || input == "search") {
       // search for a password based on the name
       cout << "What do you want to seach for" << endl;
-      //getline(cin,input);
       input =  = getInput(NOTPASSWORD);
       //search name
       vector<passwd> searchList = passwordList;
@@ -220,16 +212,13 @@ int main(int argc, char * argv[]) {
     else if (input == "saveas" || input == "savepasswordsas") {
       cout << "Save as Filename: ";
       string tempfile;
-      //getline(cin, tempfile);
       tempfile = getInput(NOTPASSWORD);
       string temppass;
       while (true) {
         cout << "Save as Password: ";
-        //getline(cin,temppass);
         temppass = getInput(PASSWORD);
         cout << "Re-type Password: ";
         string temppass2;
-        //getline(cin,temppass2);
         temppass2 = getInput(PASSWORD);
         if (temppass != temppass2) {
           cout << "Error, passwords do not match" << endl;
@@ -357,10 +346,12 @@ string getInput(bool isPassword) {
 | displaying the documentation, version information                            |
 \******************************************************************************/
 void configTerminal() {
+  #ifndef _config_file_h_
+  cout << "Config files operations are not included in this build. Configurations will return to default after you close the program" << endl;
+  #endif
   string input;
   while (true) {
     cout << "CONFIG>";
-    //getline(cin, input);
     input = getInput(NOTPASSWORD);
     if (input == "exit") break;
     else if (input == "name") {
