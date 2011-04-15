@@ -71,6 +71,19 @@ std::string unEncrypt (std::string input,std::string password) {
 | This function opens the file and unencrypts it then return a formatted      |
 | version of the contents of the file as a vector of struct passwd            |
 \*****************************************************************************/
+/* Remove Slashes *\
+\**/
+std::string removeSlashes(std::string input) {
+  for (int i = 0; i < input.size(); i++) {
+    if (input[i] == '\\') {
+      if (input[i+1] == '\\') {
+        input.erase(i,1);
+      }
+      else input[i] = ' ';
+    }
+  }
+  return input;
+}
 std::vector<passwd> openPassword(std::string filename, std::string password) {
   std::ifstream passfile;
   passfile.open (filename.c_str());
@@ -95,13 +108,16 @@ std::vector<passwd> openPassword(std::string filename, std::string password) {
   for (int i = 0; i < count; i ++) {
     passwd newpass;
     myfile >> newpass.name;
+    newpass.name = removeSlashes(newpass.name);
     passwordList.push_back(newpass);
   }
   for (int i = 0; i < count; i++) {
     myfile >> passwordList[i].username;
+    passwordList[i].username = removeSlashes(passwordList[i].username);
   }
   for (int i = 0; i < count; i++) {
     myfile >> passwordList[i].password;
+    passwordList[i].username = removeSlashes(passwordList[i].username);
   }
   
   return passwordList;
@@ -110,18 +126,32 @@ std::vector<passwd> openPassword(std::string filename, std::string password) {
 | take the username and password information turn it into a string, encrypt   |
 | the document and save it to a file                                          |
 \*****************************************************************************/
+/* Add Slashes *\
+\*/
+std::string addSlashes(std::string input) {
+  for (int i = 0; i < input.size(); i++) {
+    if (input[i] == ' ') {
+      input[i] = '\\';
+    }
+    else if (input[i] == '\\') {
+      input.insert(i,"\\");
+      i++;
+    }
+  }
+  return input;
+}
 bool savePassword(std::string filename, std::string password, std::vector<passwd> passwordList) {
   std::stringstream outstring;
   
   outstring << passwordList.size() << " ";
   for (int i = 0; i < passwordList.size(); i++) {
-    outstring << passwordList[i].name << " ";
+    outstring << addSlashes(passwordList[i].name) << " ";
   }
   for (int i = 0; i < passwordList.size(); i++) {
-    outstring << passwordList[i].username << " ";
+    outstring << addSlashes(passwordList[i].username) << " ";
   }
   for (int i = 0; i < passwordList.size(); i++) {
-    outstring << passwordList[i].password << " ";
+    outstring << addSlashes(passwordList[i].password) << " ";
   }
   
   std::ofstream outfile;
@@ -131,20 +161,4 @@ bool savePassword(std::string filename, std::string password, std::vector<passwd
   return true;
 }
 
-
-/* Add Slashes *\
-\*/
-std::string addSlashes(std::string input) {
-  for (int i = 0; i < input.size(); i++) {
-    if (input[i] == ' ') {
-      input[i] = '\\';
-    }
-    if (input[i] == '\\') {
-      input.insert(i,"\\");
-      i++;
-    }
-  }
-}
-/*
-\* Remove Slashes*/
 #endif
