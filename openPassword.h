@@ -130,4 +130,21 @@ bool savePassword(std::string filename, std::string password, std::vector<passwd
   outfile.close();
   return true;
 }
+
+
+/* Add Slashes *\
+\*/
+std::string addSlashes(std::string input) {
+  for (int i = 0; i < input.size(); i++) {
+    if (input[i] == ' ') {
+      input[i] = '\\';
+    }
+    if (input[i] == '\\') {
+      input.insert(i,"\\");
+      i++;
+    }
+  }
+}
+/*
+\* Remove Slashes*/
 #endif

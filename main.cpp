@@ -130,7 +130,7 @@ int main(int argc, char * argv[]) {
     else if (input == "remove" || input == "rem" || input == "rm" || input == "-" || input == "r") {
       int deleteNumber;
       cout << "Password Number: ";
-      input =  = getInput(NOTPASSWORD);
+      input = getInput(NOTPASSWORD);
       if (input == "") continue;
       else if (atoi(input.c_str()) > 0){
         deleteNumber = atoi(input.c_str());
@@ -174,7 +174,7 @@ int main(int argc, char * argv[]) {
     else if (input == "find" || input == "search") {
       // search for a password based on the name
       cout << "What do you want to seach for" << endl;
-      input =  = getInput(NOTPASSWORD);
+      input = getInput(NOTPASSWORD);
       //search name
       vector<passwd> searchList = passwordList;
       int erased = 0;
