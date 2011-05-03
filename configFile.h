@@ -25,5 +25,11 @@
 \******************************************************************************/
 #ifndef _config_file_h_
 #define _config_file_h_
-
+void help () {
+  std::cout << "InputMode      - Changes the method that input is collected" << std::endl;
+  std::cout << "SetDefaultPath - Changes the default path of the password file" << std::endl;
+  std::cout << "listPassword   - Show passwords whenever 'list' or 'find' is run" << std::endl;
+  std::cout << "Save-Config    - Saves the current configuration to a file" << std::endl;
+  std::cout << "exit           - Exits the configuration menu" << std::endl;
+}
 #endif

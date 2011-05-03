@@ -55,7 +55,6 @@ int inputMode = 2;
 bool showPassword = false;
 string defaultPath;
 
-
 void printPassword (vector<passwd> passwordList);
 void configTerminal();
 void help(bool all);
@@ -196,10 +195,13 @@ int main(int argc, char * argv[]) {
     
     ////////////////////////// List passwords Command //////////////////////////
     // Lists all of the saved username and passwords
-    else if (input == "passwords" || input == "passlist" || input == "list" || input == "show") {
+    else if (input == "passwords" || input == "passlist" || input == "list") {
       printPassword(passwordList);
     }
-    
+    ///// List /////
+    else if (input == "show") {
+      
+    }
     /////////////////////////////// Save Command ///////////////////////////////
     // Save the current passwords in the same configuration as the old ones
     else if (input == "save" || input == "savepasswords" || input == "s") {
@@ -395,14 +397,18 @@ void printPassword (vector<passwd> passwordList) {
   cout << "NUMBER\t";
   printWidth("NAME",namelength);
   printWidth("USERNAME",usernamelength);
-  printWidth("PASSWORD",passwordlength);
+  if (showPassword) {
+    printWidth("PASSWORD",passwordlength);
+  }
   cout << endl;
   for (int i = 0 ; i < passwordList.size(); i++) {
     if (passwordList[i].name == "" && passwordList[i].username == "" && passwordList[i].password == "") continue;
     cout << i+1 << '\t';
     printWidth(passwordList[i].name,namelength);
     printWidth(passwordList[i].username,usernamelength);
-    printWidth(passwordList[i].password,passwordlength);
+    if (showPassword) {
+      printWidth(passwordList[i].password,passwordlength);
+    }
     cout << endl;
   }  
 }
