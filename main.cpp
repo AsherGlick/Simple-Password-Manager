@@ -157,6 +157,13 @@ int main(int argc, char * argv[]) {
     else if (input == "change" || input == "alter" || input == "mod" || input == "modify") {
       int changeNumber;
       cout << "Password Number: ";
+      input = getInput(NOTPASSWORD);
+      if (input == "") continue;
+      else if (atoi(input.c_str()) > 0){
+        changeNumber = atoi(input.c_str());
+        
+      }
+      
       
     }
     
@@ -178,7 +185,7 @@ int main(int argc, char * argv[]) {
       vector<passwd> searchList = passwordList;
       int erased = 0;
       for (int i = 0; i < passwordList.size(); i++) {
-        if (!within(input,searchList[i].name) && !within(input,searchList[i].username)){
+        if (!within(input,searchList[i].name) && !within(input,searchList[i].username)){// if the criteria are not in the name or username
           searchList[i].name = "";
           searchList[i].username = "";
           searchList[i].password = "";
@@ -286,11 +293,23 @@ void help (bool all) {
   }
 }
 
+/***** Ignore Case *****\
+| A simple function to return a any string in lowercase only
+\***********************/
+string lowerCase (string input) {
+  for (int i = 0; i < input.size(); i++){
+    if (input[i] >= 'A' && input[i] <= 'Z') {
+      input[i] += 32;
+    }
+  }
+  return input;
+}
+
 /***************************** Less Then Password *****************************\
 | a less then function used for sorting the vector of passwords                |
 \******************************************************************************/
 bool lessThenPassword(passwd one, passwd two) {
-  return (one.name < two.name);
+  return (lowerCase(one.name) < lowerCase(two.name));
 }
 
 /*********************************** Within ***********************************\
@@ -308,7 +327,6 @@ bool within (string searchFor, string searchIn) {
   }
   return false;
 } 
-
 
 /********************************* Get Input *********************************\
 \*****************************************************************************/

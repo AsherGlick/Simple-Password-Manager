@@ -96,10 +96,18 @@ std::vector<passwd> openPassword(std::string filename, std::string password) {
   }
   passfile.close();
   
+  
   // entire file loaded into memory
   std::stringstream myfile;
-  myfile << unEncrypt(fileString,password);
-  
+  if (fileString.size() == 0) {
+    // if file does not exist create a virtual one
+    std::cout << "New Password File Created" << std::endl;
+    myfile << 0;
+  }
+  else {
+    // otherwise unencrypt the file and load it into memory
+    myfile << unEncrypt(fileString,password);
+  }
   
   int count;
   myfile >> count;
