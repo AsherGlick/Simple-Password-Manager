@@ -41,14 +41,15 @@ std::string encrypt (std::string input, std::string password) {
     return output;
   }
   // encrypt function (this can be modified)
-  int passwordIterator = 0;
-  for (int i = 0; i < input.size(); i++) {
+  unsigned int passwordIterator = 0;
+  for (unsigned int i = 0; i < input.size(); i++) {
     output[i] = (input[i]-password[passwordIterator])%255;
     passwordIterator++;
     if (passwordIterator >= password.size()) {
       passwordIterator = 0;
     }
   }
+  return output;
 }
 
 std::string unEncrypt (std::string input,std::string password) {
@@ -57,14 +58,15 @@ std::string unEncrypt (std::string input,std::string password) {
     return output;
   }
   // unEncrypt function (this can be modified)
-  int passwordIterator = 0;
-  for (int i = 0; i < input.size(); i++) {
+  unsigned int passwordIterator = 0;
+  for (unsigned int i = 0; i < input.size(); i++) {
     output[i] = (input[i]+password[passwordIterator])%255;
     passwordIterator++;
     if (passwordIterator >= password.size()) {
       passwordIterator = 0;
     }
   }
+  return output;
 }
 
 /******************************* Open Password *******************************\
@@ -74,7 +76,7 @@ std::string unEncrypt (std::string input,std::string password) {
 /* Remove Slashes *\
 \**/
 std::string removeSlashes(std::string input) {
-  for (int i = 0; i < input.size(); i++) {
+  for (unsigned int i = 0; i < input.size(); i++) {
     if (input[i] == '\\') {
       if (input[i+1] == '\\') {
         input.erase(i,1);
@@ -137,7 +139,7 @@ std::vector<passwd> openPassword(std::string filename, std::string password) {
 /* Add Slashes *\
 \*/
 std::string addSlashes(std::string input) {
-  for (int i = 0; i < input.size(); i++) {
+  for (unsigned int i = 0; i < input.size(); i++) {
     if (input[i] == ' ') {
       input[i] = '\\';
     }
@@ -152,13 +154,13 @@ bool savePassword(std::string filename, std::string password, std::vector<passwd
   std::stringstream outstring;
   
   outstring << passwordList.size() << " ";
-  for (int i = 0; i < passwordList.size(); i++) {
+  for (unsigned int i = 0; i < passwordList.size(); i++) {
     outstring << addSlashes(passwordList[i].name) << " ";
   }
-  for (int i = 0; i < passwordList.size(); i++) {
+  for (unsigned int i = 0; i < passwordList.size(); i++) {
     outstring << addSlashes(passwordList[i].username) << " ";
   }
-  for (int i = 0; i < passwordList.size(); i++) {
+  for (unsigned int i = 0; i < passwordList.size(); i++) {
     outstring << addSlashes(passwordList[i].password) << " ";
   }
   

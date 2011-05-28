@@ -52,7 +52,7 @@ using namespace std;
 
 // Configuration Variables
 int inputMode = 2;
-bool showPassword = false;
+bool showPassword = true;
 string defaultPath;
 
 void printPassword (vector<passwd> passwordList);
@@ -183,8 +183,8 @@ int main(int argc, char * argv[]) {
       input = getInput(NOTPASSWORD);
       //search name
       vector<passwd> searchList = passwordList;
-      int erased = 0;
-      for (int i = 0; i < passwordList.size(); i++) {
+      unsigned int erased = 0;
+      for (unsigned int i = 0; i < passwordList.size(); i++) {
         if (!within(input,searchList[i].name) && !within(input,searchList[i].username)){// if the criteria are not in the name or username
           searchList[i].name = "";
           searchList[i].username = "";
@@ -297,7 +297,7 @@ void help (bool all) {
 | A simple function to return a any string in lowercase only
 \***********************/
 string lowerCase (string input) {
-  for (int i = 0; i < input.size(); i++){
+  for (unsigned int i = 0; i < input.size(); i++){
     if (input[i] >= 'A' && input[i] <= 'Z') {
       input[i] += 32;
     }
@@ -317,6 +317,8 @@ bool lessThenPassword(passwd one, passwd two) {
 | this allows the typed input to check for                                     |
 \******************************************************************************/
 bool within (string searchFor, string searchIn) {
+  searchFor = lowerCase(searchFor);
+  searchIn = lowerCase(searchIn);
   int size = searchIn.size() - searchFor.size() + 1;
   if (size < 0) return false;
   //if (searchIn == searchFor) return true;
@@ -357,6 +359,7 @@ string getInput(bool isPassword) {
       cout << "compile the program with the ncurses IO file. By default the source code does not compile with this feature. If you want to use the ncurses IO read the documentation page on how to include the ncurses IO functions" << endl;   
     #endif
   }
+  return ("");
 }
 
 /***************************** Configure Terminal *****************************\
@@ -396,16 +399,16 @@ void printWidth(std::string print, int width) {
   for (int i = 0; i < whitespace; i++) std::cout << ' ';
 }
 void printPassword (vector<passwd> passwordList) {
-  int namelength = 4;
-  int usernamelength = 8;
-  int passwordlength = 8;
-  for (int i = 0; i < passwordList.size(); i++)
+  unsigned int namelength = 4;
+  unsigned int usernamelength = 8;
+  unsigned int passwordlength = 8;
+  for (unsigned int i = 0; i < passwordList.size(); i++)
     if (passwordList[i].name.size() > namelength)
       namelength = passwordList[i].name.size();
-  for (int i = 0; i < passwordList.size(); i++) 
+  for (unsigned int i = 0; i < passwordList.size(); i++) 
     if (passwordList[i].username.size() > usernamelength)
       usernamelength = passwordList[i].username.size();
-  for (int i = 0; i < passwordList.size(); i++)
+  for (unsigned int i = 0; i < passwordList.size(); i++)
     if (passwordList[i].password.size() > passwordlength)
       passwordlength = passwordList[i].password.size();
   
@@ -419,7 +422,7 @@ void printPassword (vector<passwd> passwordList) {
     printWidth("PASSWORD",passwordlength);
   }
   cout << endl;
-  for (int i = 0 ; i < passwordList.size(); i++) {
+  for (unsigned int i = 0 ; i < passwordList.size(); i++) {
     if (passwordList[i].name == "" && passwordList[i].username == "" && passwordList[i].password == "") continue;
     cout << i+1 << '\t';
     printWidth(passwordList[i].name,namelength);
