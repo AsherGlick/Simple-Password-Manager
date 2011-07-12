@@ -346,6 +346,10 @@ string getInput(bool isPassword) {
       cout << "   <<<<ERROR>>>>" << endl;
       cout << "ADVANCED INPUT MODE WAS NOT COMPILED IN THIS PROGRAM" << endl;
       cout << " In order to use the advanced input mode you need to compile the program with the advanced input file, by default the source code does not compile with this function. If you want to use advanced input read the documentation page on how to incude advanced input" << endl;
+      // Do a default input
+      string input;
+      getline (cin, input);
+      return input;
     #endif
   }
   else if (inputMode == 3) { // input mode is ncruses mode
@@ -356,7 +360,11 @@ string getInput(bool isPassword) {
       cout << "<([ ERROR ])>" << endl;
       cout << "NCURSES INPUT MODE WAS NOT COMPILED IN THIS PROGRAM" << endl;
       cout << " In order to use the ncurses IO mode you need to" << endl;
-      cout << "compile the program with the ncurses IO file. By default the source code does not compile with this feature. If you want to use the ncurses IO read the documentation page on how to include the ncurses IO functions" << endl;   
+      cout << "compile the program with the ncurses IO file. By default the source code does not compile with this feature. If you want to use the ncurses IO read the documentation page on how to include the ncurses IO functions" << endl;
+      // Do a default input
+      string input;
+      getline (cin, input);
+      return input;
     #endif
   }
   return ("");
@@ -378,6 +386,10 @@ void configTerminal() {
     input = getInput(NOTPASSWORD);
     if (input == "exit") break;
     else if (input == "name") {
+      cout << "change the default name of the passwords file" << endl;
+    }
+    else if (input == "inputType") {
+      cout << "change the type of input:" << endl;
     }
     else if (input == "") {
     }
