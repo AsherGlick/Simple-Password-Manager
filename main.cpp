@@ -55,6 +55,9 @@ int inputMode = 2;
 bool showPassword = true;
 string defaultPath;
 
+// Has there been a change
+bool changed = false;
+
 
 //
 void printPassword (vector<passwd> passwordList);
@@ -116,6 +119,9 @@ int main(int argc, char * argv[]) {
     //the user wants to add a password to the lsit
     
     if (input == "add" || input == "+" || input == "a") {
+      //unsaved file changes
+      changed = true;
+      //regular function
       passwd newpass;
       cout << "name: ";
       newpass.name = getInput(PPM_PLAINTEXT);
@@ -131,6 +137,9 @@ int main(int argc, char * argv[]) {
     ////////////////////////////// Remove Command //////////////////////////////
     // the user wants to remove a password from the list
     else if (input == "remove" || input == "rem" || input == "rm" || input == "-" || input == "r") {
+      // unsaved file changes
+      changed = true;
+      // regular function
       int deleteNumber;
       cout << "Password Number: ";
       input = getInput(PPM_PLAINTEXT);
@@ -159,6 +168,9 @@ int main(int argc, char * argv[]) {
     ////////////////////////////// Change command //////////////////////////////
     // the user wants to alter a password form the list
     else if (input == "change" || input == "alter" || input == "mod" || input == "modify") {
+      // unsaved file changes
+      changed = true;
+      // regular function
       int changeNumber;
       cout << "Password Number: ";
       input = getInput(PPM_PLAINTEXT);
@@ -216,6 +228,9 @@ int main(int argc, char * argv[]) {
     /////////////////////////////// Save Command ///////////////////////////////
     // Save the current passwords in the same configuration as the old ones
     else if (input == "save" || input == "savepasswords" || input == "s") {
+      // regular function
+      changed = false;
+      // regular function
       cout << "Saving Password List" << endl;
       savePassword(filename, password, passwordList);
     }
@@ -245,6 +260,17 @@ int main(int argc, char * argv[]) {
     /////////////////////////////// Exit Command ///////////////////////////////
     // quit out of the program
     else if (input == "exit" || input == "quit") {
+      if (changed) {
+        while (true) {
+          cout << "The file has been changed without saving\nDo you still want to quit?[y/n]" << endl;
+          input = getInput(PPM_PLAINTEXT);
+          if (input != "") break;
+        }
+        if (input != "y" && input!="yes") {
+          cout << "Quit Aborted" << endl;
+          continue;
+        }
+      }
       break;
     }
     
