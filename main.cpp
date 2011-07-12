@@ -461,7 +461,7 @@ void printPassword (vector<passwd> passwordList) {
   printWidth("NAME",namelength);
   printWidth("USERNAME",usernamelength);
   if (showPassword) {
-    printWidth("PPM_PASSWORD",passwordlength);
+    printWidth("PASSWORD",passwordlength);
   }
   cout << endl;
   for (unsigned int i = 0 ; i < passwordList.size(); i++) {
