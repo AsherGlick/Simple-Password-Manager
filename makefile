@@ -1,2 +1,2 @@
-all : main.cpp
-	g++ main.cpp -o ppm -Wall
+all : src/main.cpp
+	g++ src/main.cpp -o bin/ppm -Wall

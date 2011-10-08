@@ -10,4 +10,7 @@ Contributors may add their names (and email address) to the Project's ./AUTHORS 
 [1]: At OSI's website: http://www.opensource.org/licenses/bsd-license
 [2]: Full text included in ./COPYING
 
-
+This program is ment to store your passwords in a very paranoid way. Such that you can
+parse all the code yourself and understand what is going on in a short ammount of time.
+This way each individual paranoid person can not have to trust anybody when they store
+their passwords.

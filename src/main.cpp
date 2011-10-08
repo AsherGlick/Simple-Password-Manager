@@ -45,19 +45,19 @@
 #include <stdlib.h>
 #include <algorithm>
 
-#include "openPassword.h"
-#include "configFile.h"
-#include "advancedInput.h"
+#include "openPassword.h" // required file for saving passwords
+#include "configFile.h" // only needed to save config file (OPTIONAL)
+#include "advancedInput.h" // only needed if you would like to use input mode 2 (OPTIONAL)
+//#inlcude "ncursesInput.h" // only needed if you would like to use the ncurses enviroment
+
 using namespace std;
+
+
 
 // Configuration Variables
 int inputMode = 2;
 bool showPassword = true;
 string defaultPath;
-
-// Has there been a change
-bool changed = false;
-
 
 //
 void printPassword (vector<passwd> passwordList);
@@ -68,9 +68,13 @@ bool lessThenPassword(passwd one, passwd two);
 bool within (string searchFor, string searchIn);
 string getInput(bool isPassword);
 
+#include "internalCommands.h" // file containing all of the basic commands being run.
+
 
 // Main Function
 int main(int argc, char * argv[]) {
+  // Tracks if the data has been changed to prompt the user to save when they try to quit
+  bool changed = false;
   string filename;
   string password;
   
@@ -119,19 +123,7 @@ int main(int argc, char * argv[]) {
     //the user wants to add a password to the lsit
     
     if (input == "add" || input == "+" || input == "a") {
-      //unsaved file changes
-      changed = true;
-      //regular function
-      passwd newpass;
-      cout << "name: ";
-      newpass.name = getInput(PPM_PLAINTEXT);
-      cout << "username: ";
-      newpass.username = getInput(PPM_PLAINTEXT);
-      cout << "password: ";
-      newpass.password = getInput(PPM_PASSWORD);
-      passwordList.push_back(newpass);
-      sort(passwordList.begin(), passwordList.end(), lessThenPassword);
-      cout << "Added to the password list" << endl;
+      add(passwordList,changed);
     }
     
     ////////////////////////////// Remove Command //////////////////////////////
@@ -223,7 +215,11 @@ int main(int argc, char * argv[]) {
     }
     ///// List /////
     else if (input == "show") {
-      
+      cout << "What is the number of the password you want to see?" << endl;
+      char a;
+      cout << "";
+      cin >> a;
+      cout << "\r                                                  " << endl;
     }
     /////////////////////////////// Save Command ///////////////////////////////
     // Save the current passwords in the same configuration as the old ones
