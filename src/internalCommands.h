@@ -6,14 +6,14 @@ void add (std::vector<passwd> &passwordList, bool & changed)
   changed = true;
   //regular function
   passwd newpass;
-  cout << "name: ";
+  std::cout << "name: ";
   newpass.name = getInput(PPM_PLAINTEXT);
-  cout << "username: ";
+  std::cout << "username: ";
   newpass.username = getInput(PPM_PLAINTEXT);
-  cout << "password: ";
+  std::cout << "password: ";
   newpass.password = getInput(PPM_PASSWORD);
   passwordList.push_back(newpass);
   sort(passwordList.begin(), passwordList.end(), lessThenPassword);
-  cout << "Added to the password list" << endl;
+  std::cout << "Added to the password list" << std::endl;
 }    
 #endif

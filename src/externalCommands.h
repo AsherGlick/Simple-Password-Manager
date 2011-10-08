@@ -1,40 +1,43 @@
+#include <iostream>
+#include <vector>
+
 void help(bool all);
-string lowerCase (string input);
+std::string lowerCase (std::string input);
 bool lessThenPassword(passwd one, passwd two);
-bool within (string searchFor, string searchIn);
-string getInput(bool isPassword);
+bool within (std::string searchFor, std::string searchIn);
+std::string getInput(bool isPassword);
 void configTerminal();
 void printWidth(std::string print, int width);
-void printPassword (vector<passwd> passwordList);
+void printPassword (std::vector<passwd> passwordList);
 
 /************************** Help / Help All function **************************\
 | a function that displays the commands to use in a basic or in depth mode     |
 \******************************************************************************/
 void help (bool all) {
   if (all) {
-    cout << "The help all function is currently unavalable becuse the entire list" << endl;
-    cout << "of functions has not been declared yet, once the functions have been" << endl;
-    cout << "declared then this function will be compleetly implemented, until   " << endl;
-    cout << "then here is the regular help funciton" << endl;
+    std::cout << "The help all function is currently unavalable becuse the entire list" << std::endl;
+    std::cout << "of functions has not been declared yet, once the functions have been" << std::endl;
+    std::cout << "declared then this function will be compleetly implemented, until   " << std::endl;
+    std::cout << "then here is the regular help funciton" << std::endl;
     help(false);
   }
   else {
-    cout << "  add    - adds a passoword to the list" << endl;
-    cout << "  remove - removes a password from the list" << endl;
-    cout << "  change - changes a password on the list" << endl;
-    cout << "  find   - finds passwords with a specific name" << endl;
-    cout << "  list   - prints out the entire list of passwords" << endl;
-    cout << "  save   - saves the current password file" << endl;
-    cout << "  saveas - save the password files with new settings" << endl;
-    cout << "  help   - displays a list of functions" << endl;
-    cout << "  ?-A    - displays a list of functions an all possible variables" << endl;
+    std::cout << "  add    - adds a passoword to the list" << std::endl;
+    std::cout << "  remove - removes a password from the list" << std::endl;
+    std::cout << "  change - changes a password on the list" << std::endl;
+    std::cout << "  find   - finds passwords with a specific name" << std::endl;
+    std::cout << "  list   - prints out the entire list of passwords" << std::endl;
+    std::cout << "  save   - saves the current password file" << std::endl;
+    std::cout << "  saveas - save the password files with new settings" << std::endl;
+    std::cout << "  help   - displays a list of functions" << std::endl;
+    std::cout << "  ?-A    - displays a list of functions an all possible variables" << std::endl;
   }
 }
 
 /***** Ignore Case *****\
 | A simple function to return a any string in lowercase only
-\***********************/
-string lowerCase (string input) {
+\******************************************************************************/
+std::string lowerCase (std::string input) {
   for (unsigned int i = 0; i < input.size(); i++){
     if (input[i] >= 'A' && input[i] <= 'Z') {
       input[i] += 32;
@@ -54,7 +57,7 @@ bool lessThenPassword(passwd one, passwd two) {
 | This is a search function that searches for a string within another string   |
 | this allows the typed input to check for                                     |
 \******************************************************************************/
-bool within (string searchFor, string searchIn) {
+bool within (std::string searchFor, std::string searchIn) {
   searchFor = lowerCase(searchFor);
   searchIn = lowerCase(searchIn);
   int size = searchIn.size() - searchFor.size() + 1;
@@ -70,10 +73,10 @@ bool within (string searchFor, string searchIn) {
 
 /********************************* Get Input *********************************\
 \*****************************************************************************/
-string getInput(bool isPassword) {
+std::string getInput(bool isPassword) {
   if (inputMode == 1) { // input mode is standard cin
-    string input;
-    getline (cin, input);
+    std::string input;
+    getline (std::cin, input);
     return input;
   }
   else if (inputMode == 2) { // input mode is advanced mode
@@ -81,12 +84,12 @@ string getInput(bool isPassword) {
       return (getInput2(isPassword));  
     #endif
     #ifndef _advancedInput_h_
-      cout << "   <<<<ERROR>>>>" << endl;
-      cout << "ADVANCED INPUT MODE WAS NOT COMPILED IN THIS PROGRAM" << endl;
-      cout << " In order to use the advanced input mode you need to compile the program with the advanced input file, by default the source code does not compile with this function. If you want to use advanced input read the documentation page on how to incude advanced input" << endl;
+      std::cout << "   <<<<ERROR>>>>" << std::endl;
+      std::cout << "ADVANCED INPUT MODE WAS NOT COMPILED IN THIS PROGRAM" << std::endl;
+      std::cout << " In order to use the advanced input mode you need to compile the program with the advanced input file, by default the source code does not compile with this function. If you want to use advanced input read the documentation page on how to incude advanced input" << std::endl;
       // Do a default input
-      string input;
-      getline (cin, input);
+      std::string input;
+      getline (std::cin, input);
       return input;
     #endif
   }
@@ -95,13 +98,13 @@ string getInput(bool isPassword) {
       return(getInputNcurses(isPassword));
     #endif
     #ifndef _nCursesIO_h_
-      cout << "<([ ERROR ])>" << endl;
-      cout << "NCURSES INPUT MODE WAS NOT COMPILED IN THIS PROGRAM" << endl;
-      cout << " In order to use the ncurses IO mode you need to" << endl;
-      cout << "compile the program with the ncurses IO file. By default the source code does not compile with this feature. If you want to use the ncurses IO read the documentation page on how to include the ncurses IO functions" << endl;
+      std::cout << "<([ ERROR ])>" << std::endl;
+      std::cout << "NCURSES INPUT MODE WAS NOT COMPILED IN THIS PROGRAM" << std::endl;
+      std::cout << " In order to use the ncurses IO mode you need to" << std::endl;
+      std::cout << "compile the program with the ncurses IO file. By default the source code does not compile with this feature. If you want to use the ncurses IO read the documentation page on how to include the ncurses IO functions" << std::endl;
       // Do a default input
-      string input;
-      getline (cin, input);
+      std::string input;
+      getline (std::cin, input);
       return input;
     #endif
   }
@@ -116,24 +119,24 @@ string getInput(bool isPassword) {
 \******************************************************************************/
 void configTerminal() {
   #ifndef _config_file_h_
-  cout << "Config files operations are not included in this build. Configurations will return to default after you close the program" << endl;
+  std::cout << "Config files operations are not included in this build. Configurations will return to default after you close the program" << std::endl;
   #endif
-  string input;
+  std::string input;
   while (true) {
-    cout << "CONFIG>";
+    std::cout << "CONFIG>";
     input = getInput(PPM_PLAINTEXT);
     if (input == "exit") break;
     else if (input == "name") {
-      cout << "change the default name of the passwords file" << endl;
+      std::cout << "change the default name of the passwords file" << std::endl;
     }
     else if (input == "inputType") {
-      cout << "change the type of input:" << endl;
+      std::cout << "change the type of input:" << std::endl;
     }
     else if (input == "") {
     }
     else {
-      cout << "This is the Configure Terminal" << endl;
-      cout << "  Use 'exit' to return to normal mode" << endl;
+      std::cout << "This is the Configure Terminal" << std::endl;
+      std::cout << "  Use 'exit' to return to normal mode" << std::endl;
     }
   }
 }
@@ -148,7 +151,7 @@ void printWidth(std::string print, int width) {
   std::cout << print;
   for (int i = 0; i < whitespace; i++) std::cout << ' ';
 }
-void printPassword (vector<passwd> passwordList) {
+void printPassword (std::vector<passwd> passwordList) {
   unsigned int namelength = 4;
   unsigned int usernamelength = 8;
   unsigned int passwordlength = 8;
@@ -165,21 +168,21 @@ void printPassword (vector<passwd> passwordList) {
   namelength++;
   usernamelength++;
   passwordlength++;
-  cout << "NUMBER\t";
+  std::cout << "NUMBER\t";
   printWidth("NAME",namelength);
   printWidth("USERNAME",usernamelength);
   if (showPassword) {
     printWidth("PASSWORD",passwordlength);
   }
-  cout << endl;
+  std::cout << std::endl;
   for (unsigned int i = 0 ; i < passwordList.size(); i++) {
     if (passwordList[i].name == "" && passwordList[i].username == "" && passwordList[i].password == "") continue;
-    cout << i+1 << '\t';
+    std::cout << i+1 << '\t';
     printWidth(passwordList[i].name,namelength);
     printWidth(passwordList[i].username,usernamelength);
     if (showPassword) {
       printWidth(passwordList[i].password,passwordlength);
     }
-    cout << endl;
+    std::cout << std::endl;
   }  
 }
