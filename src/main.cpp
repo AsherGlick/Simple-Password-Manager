@@ -57,10 +57,7 @@ using namespace std;
 
 
 
-// Configuration Variables
-int inputMode = 2;
-bool showPassword = true;
-string defaultPath;
+
 
 
 
@@ -69,6 +66,11 @@ string defaultPath;
 
 // Main Function
 int main(int argc, char * argv[]) {
+  // Configuration Variables
+  int inputMode = 2;
+  bool showPassword = true;
+  string defaultPath;
+
   // Tracks if the data has been changed to prompt the user to save when they try to quit
   bool changed = false;
   string filename;
@@ -78,14 +80,14 @@ int main(int argc, char * argv[]) {
   // make sure that the input given by the terminal is valad
   if(argc == 1) {
     cout << "Input the path to your password file: ";
-    filename = getInput(PPM_PLAINTEXT);
+    filename = getInput(PPM_PLAINTEXT,inputMode);
     cout << "What is the password to unlock the file: ";
-    password = getInput(PPM_PASSWORD);
+    password = getInput(PPM_PASSWORD,inputMode);
   }  
   else if (argc == 2 && string(argv[1]) != "-?") {
     filename = argv[1];
     cout << "What is the password to unlock the file: ";
-    password = getInput(PPM_PASSWORD);
+    password = getInput(PPM_PASSWORD,inputMode);
   }
   else if (argc == 3) {
     filename = argv[1];
@@ -113,13 +115,13 @@ int main(int argc, char * argv[]) {
   // begin the cli interface loop allowing the user to input commands
   while(true) {
     cout << "]> ";
-    input = getInput(PPM_PLAINTEXT);
+    input = getInput(PPM_PLAINTEXT,inputMode);
     
     /////////////////////////////// Add Command ///////////////////////////////
     //the user wants to add a password to the lsit
     
     if (input == "add" || input == "+" || input == "a") {
-      add(passwordList,changed);
+      add(passwordList,changed,inputMode);
     }
     
     ////////////////////////////// Remove Command //////////////////////////////
@@ -130,13 +132,13 @@ int main(int argc, char * argv[]) {
       // regular function
       int deleteNumber;
       cout << "Password Number: ";
-      input = getInput(PPM_PLAINTEXT);
+      input = getInput(PPM_PLAINTEXT,inputMode);
       if (input == "") continue;
       else if (atoi(input.c_str()) > 0){
         deleteNumber = atoi(input.c_str());
         while (true) {
           cout << "Are you sure you want to delete number " << deleteNumber << "?" ;
-          input = getInput(PPM_PLAINTEXT);
+          input = getInput(PPM_PLAINTEXT,inputMode);
           if (input != "") break;
         }
         if (input != "y" && input!="yes") {
@@ -161,7 +163,7 @@ int main(int argc, char * argv[]) {
       // regular function
       int changeNumber;
       cout << "Password Number: ";
-      input = getInput(PPM_PLAINTEXT);
+      input = getInput(PPM_PLAINTEXT,inputMode);
       if (input == "") continue;
       else if (atoi(input.c_str()) > 0){
         changeNumber = atoi(input.c_str());
@@ -175,7 +177,7 @@ int main(int argc, char * argv[]) {
     // The user wants to enter the configuration mode of the program
     else if (input == "config") {
       // Enter config mode
-      configTerminal();
+      configTerminal(inputMode);
     }
     
     ////////////////////////////// Search Command //////////////////////////////
@@ -184,7 +186,7 @@ int main(int argc, char * argv[]) {
     else if (input == "find" || input == "search") {
       // search for a password based on the name
       cout << "What do you want to seach for" << endl;
-      input = getInput(PPM_PLAINTEXT);
+      input = getInput(PPM_PLAINTEXT,inputMode);
       //search name
       vector<passwd> searchList = passwordList;
       unsigned int erased = 0;
@@ -200,14 +202,14 @@ int main(int argc, char * argv[]) {
         cout << "No Results Found" << endl;
       }
       else {
-        printPassword(searchList);
+        printPassword(searchList, showPassword);
       }
     }
     
     ////////////////////////// List passwords Command //////////////////////////
     // Lists all of the saved username and passwords
     else if (input == "passwords" || input == "passlist" || input == "list") {
-      printPassword(passwordList);
+      printPassword(passwordList,showPassword);
     }
     ///// List /////
     else if (input == "show") {
@@ -232,14 +234,14 @@ int main(int argc, char * argv[]) {
     else if (input == "saveas" || input == "savepasswordsas") {
       cout << "Save as Filename: ";
       string tempfile;
-      tempfile = getInput(PPM_PLAINTEXT);
+      tempfile = getInput(PPM_PLAINTEXT,inputMode);
       string temppass;
       while (true) {
         cout << "Save as Password: ";
-        temppass = getInput(PPM_PASSWORD);
+        temppass = getInput(PPM_PASSWORD,inputMode);
         cout << "Re-type Password: ";
         string temppass2;
-        temppass2 = getInput(PPM_PASSWORD);
+        temppass2 = getInput(PPM_PASSWORD,inputMode);
         if (temppass != temppass2) {
           cout << "Error, passwords do not match" << endl;
         }
@@ -255,7 +257,7 @@ int main(int argc, char * argv[]) {
       if (changed) {
         while (true) {
           cout << "The file has been changed without saving\nDo you still want to quit?[y/n]" << endl;
-          input = getInput(PPM_PLAINTEXT);
+          input = getInput(PPM_PLAINTEXT,inputMode);
           if (input != "") break;
         }
         if (input != "y" && input!="yes") {

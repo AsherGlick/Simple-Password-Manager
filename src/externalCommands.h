@@ -5,10 +5,10 @@ void help(bool all);
 std::string lowerCase (std::string input);
 bool lessThenPassword(passwd one, passwd two);
 bool within (std::string searchFor, std::string searchIn);
-std::string getInput(bool isPassword);
-void configTerminal();
+std::string getInput(bool isPassword, int inputMode);
+void configTerminal(int inputMode);
 void printWidth(std::string print, int width);
-void printPassword (std::vector<passwd> passwordList);
+void printPassword (std::vector<passwd> passwordList, bool showPassword);
 
 /************************** Help / Help All function **************************\
 | a function that displays the commands to use in a basic or in depth mode     |
@@ -73,7 +73,7 @@ bool within (std::string searchFor, std::string searchIn) {
 
 /********************************* Get Input *********************************\
 \*****************************************************************************/
-std::string getInput(bool isPassword) {
+std::string getInput(bool isPassword, int inputMode) {
   if (inputMode == 1) { // input mode is standard cin
     std::string input;
     getline (std::cin, input);
@@ -117,14 +117,14 @@ std::string getInput(bool isPassword) {
 | and only affect the program. Commands in the configure terminal include      |
 | displaying the documentation, version information                            |
 \******************************************************************************/
-void configTerminal() {
+void configTerminal(int inputMode) {
   #ifndef _config_file_h_
   std::cout << "Config files operations are not included in this build. Configurations will return to default after you close the program" << std::endl;
   #endif
   std::string input;
   while (true) {
     std::cout << "CONFIG>";
-    input = getInput(PPM_PLAINTEXT);
+    input = getInput(PPM_PLAINTEXT,inputMode);
     if (input == "exit") break;
     else if (input == "name") {
       std::cout << "change the default name of the passwords file" << std::endl;
@@ -151,7 +151,7 @@ void printWidth(std::string print, int width) {
   std::cout << print;
   for (int i = 0; i < whitespace; i++) std::cout << ' ';
 }
-void printPassword (std::vector<passwd> passwordList) {
+void printPassword (std::vector<passwd> passwordList, bool showPassword) {
   unsigned int namelength = 4;
   unsigned int usernamelength = 8;
   unsigned int passwordlength = 8;
