@@ -29,12 +29,18 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+/******************************** PASSWD STRUCT *******************************\
+|
+\******************************************************************************/
 struct passwd {
   std::string name;
   std::string username;
   std::string password;
 };
 
+/*********************************** ENCRYPT **********************************\
+|
+\******************************************************************************/
 std::string encrypt (std::string input, std::string password) {
   std::string output = input;
   if (password == "") {
@@ -52,6 +58,9 @@ std::string encrypt (std::string input, std::string password) {
   return output;
 }
 
+/********************************** UNENCRYPT *********************************\
+|
+\******************************************************************************/
 std::string unEncrypt (std::string input,std::string password) {
   std::string output = input;
   if (password == "") {
@@ -127,9 +136,10 @@ std::vector<passwd> openPassword(std::string filename, std::string password) {
   }
   for (int i = 0; i < count; i++) {
     myfile >> passwordList[i].password;
-    passwordList[i].username = removeSlashes(passwordList[i].username);
+    passwordList[i].password = removeSlashes(passwordList[i].password);
   }
-  
+  std::cout << passwordList.size() << std::endl;
+  std::cout << count << std::endl;
   return passwordList;
 }
 /******************************* Save Password *******************************\
