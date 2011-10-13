@@ -77,4 +77,13 @@ void search (std::vector<passwd> &passwordList, bool & changed, int inputMode, b
     printPassword(searchList, showPassword);
   }
 }
+/************************************ SAVE ************************************\
+|
+\******************************************************************************/
+void save (std::string filename, std::string password, std::vector<passwd> passwordList, bool &changed){
+  changed = false;
+  // regular function
+  std::cout << "Saving Password List" << std::endl;
+  savePassword(filename, password, passwordList);
+}
 #endif

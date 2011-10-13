@@ -168,10 +168,7 @@ int main(int argc, char * argv[]) {
     // Save the current passwords in the same configuration as the old ones
     else if (input == "save" || input == "savepasswords" || input == "s") {
       // regular function
-      changed = false;
-      // regular function
-      cout << "Saving Password List" << endl;
-      savePassword(filename, password, passwordList);
+      save(filename,password,passwordList,changed);
     }
     
     ///////////////////////////// Save As command /////////////////////////////
