@@ -127,32 +127,7 @@ int main(int argc, char * argv[]) {
     ////////////////////////////// Remove Command //////////////////////////////
     // the user wants to remove a password from the list
     else if (input == "remove" || input == "rem" || input == "rm" || input == "-" || input == "r") {
-      // unsaved file changes
-      changed = true;
-      // regular function
-      int deleteNumber;
-      cout << "Password Number: ";
-      input = getInput(PPM_PLAINTEXT,inputMode);
-      if (input == "") continue;
-      else if (atoi(input.c_str()) > 0){
-        deleteNumber = atoi(input.c_str());
-        while (true) {
-          cout << "Are you sure you want to delete number " << deleteNumber << "?" ;
-          input = getInput(PPM_PLAINTEXT,inputMode);
-          if (input != "") break;
-        }
-        if (input != "y" && input!="yes") {
-          cout << "Nothing Deleted" << endl;
-          continue;
-        }
-        cout << "Deleted Entry Number " << deleteNumber << endl;
-      }
-      else {
-        cout << "that is not a valid number" << endl;
-        continue;
-      }
-      //remove delnum password
-      passwordList.erase (passwordList.begin()+deleteNumber-1);
+      remove(passwordList,changed,inputMode);
     }
     
     ////////////////////////////// Change command //////////////////////////////
