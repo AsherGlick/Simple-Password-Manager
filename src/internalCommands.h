@@ -19,7 +19,9 @@ void add (std::vector<passwd> &passwordList, bool & changed, int inputMode)
   sort(passwordList.begin(), passwordList.end(), lessThenPassword);
   std::cout << "Added to the password list" << std::endl;
 }    
-
+/*********************************** REMOVE ***********************************\
+|
+\******************************************************************************/
 void remove (std::vector<passwd> &passwordList, bool & changed, int inputMode) {
   std::string input;
   // unsaved file changes
@@ -48,5 +50,29 @@ void remove (std::vector<passwd> &passwordList, bool & changed, int inputMode) {
   }
   //remove delnum password
   passwordList.erase (passwordList.begin()+deleteNumber-1);
+}
+
+void search (std::vector<passwd> &passwordList, bool & changed, int inputMode, bool showPassword) {
+  std::string input;
+  // search for a password based on the name
+  std::cout << "What do you want to seach for" << std::endl;
+  input = getInput(PPM_PLAINTEXT,inputMode);
+  //search name
+  std::vector<passwd> searchList = passwordList;
+  unsigned int erased = 0;
+  for (unsigned int i = 0; i < passwordList.size(); i++) {
+    if (!within(input,searchList[i].name) && !within(input,searchList[i].username)){// if the criteria are not in the name or username
+      searchList[i].name = "";
+      searchList[i].username = "";
+      searchList[i].password = "";
+      erased ++;
+    }
+  }
+  if (searchList.size() == erased) {
+    std::cout << "No Results Found" << std::endl;
+  }
+  else {
+    printPassword(searchList, showPassword);
+  }
 }
 #endif

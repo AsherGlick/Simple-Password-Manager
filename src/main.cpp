@@ -142,10 +142,7 @@ int main(int argc, char * argv[]) {
       if (input == "") continue;
       else if (atoi(input.c_str()) > 0){
         changeNumber = atoi(input.c_str());
-        
       }
-      
-      
     }
     
     //////////////////////////// Configure Command ////////////////////////////
@@ -159,26 +156,7 @@ int main(int argc, char * argv[]) {
     // This command searches through your passwords, this is to be used to
     // manage large numbers of passwords quickly
     else if (input == "find" || input == "search") {
-      // search for a password based on the name
-      cout << "What do you want to seach for" << endl;
-      input = getInput(PPM_PLAINTEXT,inputMode);
-      //search name
-      vector<passwd> searchList = passwordList;
-      unsigned int erased = 0;
-      for (unsigned int i = 0; i < passwordList.size(); i++) {
-        if (!within(input,searchList[i].name) && !within(input,searchList[i].username)){// if the criteria are not in the name or username
-          searchList[i].name = "";
-          searchList[i].username = "";
-          searchList[i].password = "";
-          erased ++;
-        }
-      }
-      if (searchList.size() == erased) {
-        cout << "No Results Found" << endl;
-      }
-      else {
-        printPassword(searchList, showPassword);
-      }
+      search(passwordList,changed,inputMode,showPassword);
     }
     
     ////////////////////////// List passwords Command //////////////////////////
