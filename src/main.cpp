@@ -45,7 +45,6 @@
 #include <stdlib.h>
 #include <algorithm>
 
-
 #include "openPassword.h" // required file for saving passwords
 #include "configFile.h" // only needed to save config file (OPTIONAL)
 #include "advancedInput.h" // only needed if you would like to use input mode 2 (OPTIONAL)
@@ -55,16 +54,9 @@
 #include "internalCommands.h" // file containing all of the basic commands being run.
 using namespace std;
 
-
-
-
-
-
-
-
-
-
-// Main Function
+/************************************ MAIN ************************************\
+|
+\******************************************************************************/
 int main(int argc, char * argv[]) {
   // Configuration Variables
   int inputMode = 2;
@@ -110,8 +102,8 @@ int main(int argc, char * argv[]) {
   // make sure to check all the functions that have this variable pass into them
   vector<passwd> passwordList = openPassword(filename, password);
   
-  //printPassword(passwordList);
   string input;
+  
   // begin the cli interface loop allowing the user to input commands
   while(true) {
     cout << "]> ";

@@ -34,7 +34,7 @@ void remove (std::vector<passwd> &passwordList, bool & changed, int inputMode) {
   else if (atoi(input.c_str()) > 0){
     deleteNumber = atoi(input.c_str());
     while (true) {
-      std::cout << "Are you sure you want to delete number " << deleteNumber << "?" ;
+      std::cout << "Are you sure you want to delete "<< passwordList[deleteNumber-1].name << "  " << passwordList[deleteNumber-1].username<< "?" ;
       input = getInput(PPM_PLAINTEXT,inputMode);
       if (input != "") break;
     }
@@ -42,7 +42,6 @@ void remove (std::vector<passwd> &passwordList, bool & changed, int inputMode) {
       std::cout << "Nothing Deleted" << std::endl;
       return;
     }
-    std::cout << "Deleted Entry Number " << deleteNumber << std::endl;
   }
   else {
     std::cout << "that is not a valid number" << std::endl;
@@ -50,8 +49,11 @@ void remove (std::vector<passwd> &passwordList, bool & changed, int inputMode) {
   }
   //remove delnum password
   passwordList.erase (passwordList.begin()+deleteNumber-1);
+  std::cout << "Deleted Entry Number " << deleteNumber << std::endl;
 }
-
+/*********************************** SEARCH ***********************************\
+|
+\******************************************************************************/
 void search (std::vector<passwd> &passwordList, bool & changed, int inputMode, bool showPassword) {
   std::string input;
   // search for a password based on the name
